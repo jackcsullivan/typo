@@ -15,6 +15,11 @@ describe Admin::CategoriesController do
     get :index
     assert_response :redirect, :action => 'index'
   end
+  
+  it "renders a new category" do
+      get :new
+      expect(response).to render_template("admin/categories/new")
+    end
 
   describe "test_edit" do
     before(:each) do
