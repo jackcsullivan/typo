@@ -25,11 +25,16 @@ class Admin::CategoriesController < Admin::BaseController
 
   def new_or_edit
     @categories = Category.find(:all)
-    if params[:id].nil?
+    if params[:id].nil? and params[:category].nil?
       @category = Category.new
       return render 'admin/categories/new'
     end
-    @category = Category.find(params[:id])
+    
+    if params[:id].nil?
+      @category = Category.new
+    else
+      @category = Category.find(params[:id])
+    
     @category.attributes = params[:category]
     if request.post?
       respond_to do |format|
