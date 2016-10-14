@@ -449,6 +449,16 @@ class Article < Content
 
     true
   end
+  
+  def merge_with_other_article(articleID)
+    second_article = Article.find(articleID)
+    self.body = self.body + second_article.body
+    second_article.comments.each do |comment|
+      comment.article_id = self.id
+      comment.save!
+    end
+    self.save!
+  end
 
   def add_notifications
     users = interested_users
