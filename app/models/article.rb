@@ -34,17 +34,17 @@ class Article < Content
     def spam
       find :all, :conditions => {:state => ["presumed_spam", "spam"]}
     end
-    
-    def merge_with(other_article_id)
-      second_article = Article.find(other_article_id)
-      self.body = self.body + second_article.body
-      second_article.comments.each do |comment|
-        comment.article_id = self.id
-        comment.save!
-      end
-      self.save!
-    end
 
+  end
+  
+  def merge_with(other_article_id)
+    second_article = Article.find(other_article_id)
+    self.body = self.body + second_article.body
+    second_article.comments.each do |comment|
+      comment.article_id = self.id
+      comment.save!
+    end
+    self.save!
   end
 
   with_options(:conditions => { :published => true }, :order => 'created_at DESC') do |this|
