@@ -416,6 +416,16 @@ class Article < Content
     user.admin? || user_id == user.id
   end
 
+  def merge_with(other_article_id)
+    second_article = Article.find(other_article_id)
+    self.body = self.body + second_article.body
+    second_article.comments.each do |comment|
+      comment.article_id = self.id
+      comment.save!
+    end
+    self.save!
+  end
+
   protected
 
   def set_published_at
@@ -448,16 +458,6 @@ class Article < Content
     end
 
     true
-  end
-  
-  def merge_with_other_article(articleID)
-    second_article = Article.find(articleID)
-    self.body = self.body + second_article.body
-    second_article.comments.each do |comment|
-      comment.article_id = self.id
-      comment.save!
-    end
-    self.save!
   end
 
   def add_notifications
