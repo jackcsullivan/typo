@@ -628,6 +628,32 @@ describe Article do
         article.should be == already_exist_article
       end
     end
+    
+    it 'articles merge into the first article' do
+      first_article = Factory(:article)
+      second_article = Factory(:article, :permalink => 'second-blog-article',
+                    :published_at => '2013-06-01 00:00:00',
+                    :updated_at => '2013-06-07 03:00:00',
+                    :created_at => '2004-04-01 02:00:00')
+      first_article.merge_with(second_article)
+      first_article.should_not be_nil
+
+    end
+
+    it 'merge with more than two articles' do
+      first_article = Factory(:article)
+      second_article = Factory(:article, :permalink => 'second-blog-article',
+                    :published_at => '2013-06-01 00:00:00',
+                    :updated_at => '2013-06-07 03:00:00',
+                    :created_at => '2004-04-01 02:00:00')
+      third_article = Factory(:article, :permalink => 'third-blog-article',
+                    :published_at => '2015-06-01 00:00:00',
+                    :updated_at => '2015-06-07 03:00:00',
+                    :created_at => '2006-04-01 02:00:00')
+      third_article.merge_with(first_article)
+      second_article.merge_with(third_article)
+      second_article.should_not be_nil
+    end
 
   end
 end
